@@ -1,13 +1,13 @@
-package com.gojung.s3uploder;
+package com.gojung.springjpa;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class S3UploderApplication {
+public class SpringJpaApplication {
 
   public static void main(String[] args) {
-    SpringApplication.run(S3UploderApplication.class, args);
+    SpringApplication.run(SpringJpaApplication.class, args);
   }
 
 }

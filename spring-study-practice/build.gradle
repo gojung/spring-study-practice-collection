@@ -125,7 +125,7 @@ project(':s3-uploder') {
     }
 }
 
-project(':spring-mvc') {
+project(':spring-jpa') {
     dependencies {
     }
 }
