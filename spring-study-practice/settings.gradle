@@ -1,3 +1,2 @@
 rootProject.name = 'spring-study-practice'
-
-include 's3-uploder'
+include 's3-uploder', 'spring-mvc'
