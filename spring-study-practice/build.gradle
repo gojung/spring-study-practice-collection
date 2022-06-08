@@ -1,10 +1,19 @@
-plugins {
-    id 'org.springframework.boot' version '2.6.8'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-    id 'java'
+buildscript {
+    ext {
+        springBootVersion = '2.6.8'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+        classpath "io.spring.gradle:dependency-management-plugin:1.0.11.RELEASE"
+        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.17'
+    }
 }
 
-bootJar { enabled = false }
+/*disable 해놓으면 하위 프로젝트의 task를 찾지 못한다*/
+//bootJar { enabled = false }
 
 allprojects {
     repositories {
@@ -19,7 +28,7 @@ subprojects {
     apply plugin: 'jacoco'
 
     group = 'com.gojung'
-    version = '1.0'
+    version = '0.0.1-SNAPSHOT'
     sourceCompatibility = '11'
 
     configurations {
@@ -29,17 +38,22 @@ subprojects {
     }
 
     dependencies {
+        /*boot*/
         implementation 'org.springframework.boot:spring-boot-starter'
         implementation 'org.springframework.boot:spring-boot-starter-web:2.5.5'
-        implementation "io.springfox:springfox-swagger2:2.9.2"
-        implementation "io.springfox:springfox-swagger-ui:2.9.2"
 
+        /* swagger */
+        implementation "io.springfox:springfox-boot-starter:3.0.0"
+        implementation "io.springfox:springfox-swagger-ui:3.0.0"
+
+        /*lombok*/
         compileOnly 'org.projectlombok:lombok'
         annotationProcessor 'org.projectlombok:lombok'
-
-        testImplementation 'org.springframework.boot:spring-boot-starter-test'
         testCompileOnly 'org.projectlombok:lombok'
         testAnnotationProcessor 'org.projectlombok:lombok'
+
+        /*test*/
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
     }
 
     jacoco {
@@ -98,6 +112,10 @@ subprojects {
 
     test {
         useJUnitPlatform()
+        testLogging {
+            events "failed"
+            exceptionFormat "full"
+        }
         finalizedBy 'jacocoTestReport'
     }
 }
@@ -105,5 +123,9 @@ subprojects {
 project(':s3-uploder') {
     dependencies {
     }
-    bootJar { enabled = false }
+}
+
+project(':spring-mvc') {
+    dependencies {
+    }
 }
