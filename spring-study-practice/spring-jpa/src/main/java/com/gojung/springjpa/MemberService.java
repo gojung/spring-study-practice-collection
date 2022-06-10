@@ -1,5 +1,6 @@
 package com.gojung.springjpa;
 
+import com.gojung.springjpa.dto.SaveMemberResponseDto;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,10 +12,10 @@ public class MemberService {
 
   private final MemberRepository memberRepository;
 
-  public Long create(String username, Integer age) {
+  public SaveMemberResponseDto create(String username, Integer age) {
     Member member = Member.builder().username(username).age(age).build();
     Member savedMember = memberRepository.save(member);
-    return savedMember.getId();
+    return new SaveMemberResponseDto(savedMember.getId());
   }
 
   public void update(Long id, String name) {
