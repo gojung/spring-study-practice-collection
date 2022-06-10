@@ -1,18 +1,13 @@
-buildscript {
-    ext {
-        springBootVersion = '2.6.8'
-    }
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
-        classpath "io.spring.gradle:dependency-management-plugin:1.0.11.RELEASE"
-        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.17'
-    }
+plugins {
+    id 'org.springframework.boot' version '2.6.4'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+    id 'jacoco'
+    id 'org.asciidoctor.jvm.convert' version '3.3.2'
 }
 
-/*disable 해놓으면 하위 프로젝트의 task를 찾지 못한다*/
+
+/*disable 해놓으면 하위 프로젝트의 task를 찾지 못한다 왜..?*/
 //bootJar { enabled = false }
 
 allprojects {
@@ -43,8 +38,8 @@ subprojects {
         implementation 'org.springframework.boot:spring-boot-starter-web:2.5.5'
 
         /* swagger */
-        implementation "io.springfox:springfox-boot-starter:3.0.0"
-        implementation "io.springfox:springfox-swagger-ui:3.0.0"
+//        implementation "io.springfox:springfox-boot-starter:3.0.0"
+//        implementation "io.springfox:springfox-swagger-ui:3.0.0"
 
         /*lombok*/
         compileOnly 'org.projectlombok:lombok'

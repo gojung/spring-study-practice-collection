@@ -1,4 +1,4 @@
-package com.gojung.springmvc;
+package com.gojung.springjpa;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
