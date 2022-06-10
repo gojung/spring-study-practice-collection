@@ -134,8 +134,8 @@ subprojects {
         configurations 'asciidoctorExtensions'
         inputs.dir snippetsDir
 
-        sources{
-            include("**/index.adoc","**/common/*.adoc")
+        sources {
+            include("**/index.adoc", "**/common/*.adoc")
         }
 
         baseDirFollowsSourceFile()

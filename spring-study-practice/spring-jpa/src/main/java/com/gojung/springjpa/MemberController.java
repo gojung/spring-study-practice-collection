@@ -19,13 +19,13 @@ public class MemberController {
   private final MemberService memberService;
 
   @PostMapping
-  public ResponseEntity<SaveMemberResponseDto> saveMember(@RequestBody SaveMemberDto dto){
+  public ResponseEntity<SaveMemberResponseDto> saveMember(@RequestBody SaveMemberDto dto) {
     SaveMemberResponseDto responseDto = memberService.create(dto.getUserName(), dto.getAge());
     return ResponseEntity.status(200).body(responseDto);
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<Member> saveMember(@PathVariable Long id){
+  public ResponseEntity<Member> saveMember(@PathVariable Long id) {
     Member member = memberService.findById(id);
     return ResponseEntity.status(200).body(member);
   }

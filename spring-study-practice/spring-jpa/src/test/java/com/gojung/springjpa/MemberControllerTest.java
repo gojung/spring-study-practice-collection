@@ -1,6 +1,14 @@
 package com.gojung.springjpa;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gojung.springjpa.dto.SaveMemberDto;
@@ -20,20 +28,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.doReturn;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
 @WebMvcTest(controllers = MemberController.class)
@@ -51,18 +45,18 @@ class MemberControllerTest {
 
   @DisplayName("Save Member")
   @Test
-  void save_member() throws Exception{
+  void save_member() throws Exception {
+    //given
     SaveMemberDto dto = new SaveMemberDto("gojung", 20);
     String content = new ObjectMapper().writeValueAsString(dto);
     final String url = "/api/v1/members";
     SaveMemberResponseDto dto1 = new SaveMemberResponseDto(0L);
-    //given
     doReturn(dto1).when(memberService).create(any(), any());
     //when
-    ResultActions res =  mockMvc.perform(post(url)
-        .content(content)
-        .contentType(MediaType.APPLICATION_JSON)
-//        .accept(MediaType.APPLICATION_JSON)
+    ResultActions res = mockMvc.perform(post(url)
+            .content(content)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON)
         )
         .andDo(print())
         .andExpect(status().isOk())
