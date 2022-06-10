@@ -8,7 +8,7 @@ plugins {
 
 
 /*disable 해놓으면 하위 프로젝트의 task를 찾지 못한다 왜..?*/
-//bootJar { enabled = false }
+bootJar { enabled = false }
 
 allprojects {
     repositories {
@@ -21,16 +21,23 @@ subprojects {
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'jacoco'
+    apply plugin: 'org.asciidoctor.jvm.convert'
 
     group = 'com.gojung'
     version = '0.0.1-SNAPSHOT'
     sourceCompatibility = '11'
 
     configurations {
+        asciidoctorExtensions
         compileOnly {
             extendsFrom annotationProcessor
         }
     }
+
+    ext {
+        snippetsDir = file('build/generated-snippets')
+    }
+
 
     dependencies {
         /*boot*/
@@ -46,6 +53,13 @@ subprojects {
         annotationProcessor 'org.projectlombok:lombok'
         testCompileOnly 'org.projectlombok:lombok'
         testAnnotationProcessor 'org.projectlombok:lombok'
+
+        /* Rest Docs */
+        asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+        testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+
+        /*h2*/
+        runtimeOnly 'com.h2database:h2'
 
         /*test*/
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -106,6 +120,7 @@ subprojects {
     }
 
     test {
+        outputs.dir snippetsDir
         useJUnitPlatform()
         testLogging {
             events "failed"
@@ -113,6 +128,32 @@ subprojects {
         }
         finalizedBy 'jacocoTestReport'
     }
+
+    asciidoctor {
+        dependsOn test
+        configurations 'asciidoctorExtensions'
+        inputs.dir snippetsDir
+
+        sources{
+            include("**/index.adoc","**/common/*.adoc")
+        }
+
+        baseDirFollowsSourceFile()
+    }
+
+    asciidoctor.doFirst {
+        delete file('src/main/resources/static/docs')
+    }
+
+    task copyDocument(type: Copy) {
+        dependsOn asciidoctor
+        from file("build/docs/asciidoc")
+        into file("src/main/resources/static/docs")
+    }
+    build {
+        dependsOn copyDocument
+    }
+
 }
 
 project(':s3-uploder') {
@@ -121,6 +162,10 @@ project(':s3-uploder') {
 }
 
 project(':spring-jpa') {
+    bootJar { enabled = true }
     dependencies {
+        /* JPA */
+        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+        implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.0'
     }
 }
