@@ -44,10 +44,6 @@ subprojects {
         implementation 'org.springframework.boot:spring-boot-starter'
         implementation 'org.springframework.boot:spring-boot-starter-web:2.5.5'
 
-        /* swagger */
-//        implementation "io.springfox:springfox-boot-starter:3.0.0"
-//        implementation "io.springfox:springfox-swagger-ui:3.0.0"
-
         /*lombok*/
         compileOnly 'org.projectlombok:lombok'
         annotationProcessor 'org.projectlombok:lombok'
@@ -161,11 +157,19 @@ project(':s3-uploder') {
     }
 }
 
-project(':spring-jpa') {
+project(':member-service') {
     bootJar { enabled = true }
     dependencies {
         /* JPA */
         implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
         implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.0'
+
+        /*validation*/
+        implementation 'org.springframework.boot:spring-boot-starter-validation:2.5.5'
     }
+
+    tasks.named('test') {
+        useJUnitPlatform()
+    }
+
 }
