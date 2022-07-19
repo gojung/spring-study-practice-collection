@@ -167,9 +167,20 @@ project(':member-service') {
         /*validation*/
         implementation 'org.springframework.boot:spring-boot-starter-validation:2.5.5'
     }
+}
 
-    tasks.named('test') {
-        useJUnitPlatform()
+project(':design-pattern') {
+    dependencies {
     }
+}
 
+project(':jpashop') {
+    dependencies {
+        /* JPA */
+        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+        implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.0'
+
+        /*validation*/
+        implementation 'org.springframework.boot:spring-boot-starter-validation:2.5.5'
+    }
 }
