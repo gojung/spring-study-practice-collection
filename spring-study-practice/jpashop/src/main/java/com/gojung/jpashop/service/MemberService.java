@@ -2,6 +2,7 @@ package com.gojung.jpashop.service;
 
 import com.gojung.jpashop.domain.Member;
 import com.gojung.jpashop.repository.MemberRepository;
+import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,4 +16,14 @@ public class MemberService {
     return memberRepository.save(member).getId();
   }
 
+
+  @Transactional
+  public void update(Long id, String name) {
+    Member member = findOne(id);
+    member.setName(name);
+  }
+
+  public Member findOne(Long id) {
+    return memberRepository.findById(id).orElse(null);
+  }
 }
